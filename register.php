@@ -6,7 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="footer.css">
-    <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="cssweb/styleWeb.css">
 </head>
 <?php
   $errors = [];
@@ -45,7 +45,7 @@
   }
 ?>
 <body>
-<?php require('./includes/header.php')?>
+<?php require('./include/header.php')?>
 <main>
   <div class="container"> 
       <div class="form-container">
@@ -66,6 +66,6 @@
       </div>
   </div>
 </main>
-<?php require('./includes/footer.php')?>
+<?php require('./include/footer.php')?>
 </body>
 </html>
