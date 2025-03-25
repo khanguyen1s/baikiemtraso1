@@ -6,16 +6,15 @@
     <title>Đăng nhập</title>
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="footer.css">
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="cssweb/styleWeb.css">
 </head>
 <?php
-$username = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
 $email = isset($_COOKIE['email']) ? $_COOKIE['email'] : '';
 $password = isset($_COOKIE['password']) ? $_COOKIE['password'] : '';
   $errors = [];
   if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     if (empty(htmlspecialchars($_POST['email']))== $email) {
-      $errors['email'] = 'Vui lòng nhập email.';
+      $errors['email'] = 'Email không hợp lệ.';
     } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
       $errors['email'] = 'Email không hợp lệ.';
     }elseif (empty(htmlspecialchars($_POST['password']))) {
@@ -24,17 +23,17 @@ $password = isset($_COOKIE['password']) ? $_COOKIE['password'] : '';
       $errors['password'] = 'Sai mật khẩu';
     }if(count($errors)<1){
     $_POST['email'] = $_POST['password'] = '';
-    header('location:#');
+    header('location:./dashboard.php');
   }
   } 
 ?>
 <body>
-  <?php require('./includes/header.php')?>
+  <?php require('./include/header.php')?>
     <main>
         <div class="container">
         <div class="left">
-            <h1>ten web</h1>
-            <p>noi dung</p>
+            <h1>RƯỢU NGON THÀNH TỊNH</h1>
+            <p>Nơi thỏa sức đam mê với các loại rượu</p>
         </div>
         <div class="right">
             <form class="login-box" method="POST">
@@ -43,12 +42,12 @@ $password = isset($_COOKIE['password']) ? $_COOKIE['password'] : '';
             <input type="password" name="password" placeholder="Mật khẩu" value="<?php echo isset($_POST['password'])? $_POST['password'] : ''?>">
             <span class="error"><?php echo $errors['password'] ?? ''; ?></span>
             <input type="submit" value="Đăng nhập">
-            <a href="#">Quên mật khẩu?</a>
+            <a href="./reset-password.php">Quên mật khẩu?</a>
             <button class="create-account"><a href="register.php">Tạo tài khoản mới</a></button>
             </form>
         </div>
         </div>
     </main>
-    <?php require('./includes/footer.php')?>
+    <?php require('./include/footer.php')?>
 </body>
 </html>
