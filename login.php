@@ -4,50 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập</title>
-    <link rel="stylesheet" href="header.css">
-    <link rel="stylesheet" href="footer.css">
-    <link rel="stylesheet" href="cssweb/styleWeb.css">
+    <link rel="stylesheet" href="./css/styleWeb.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/footer.css">
 </head>
 <?php
-$email = isset($_COOKIE['email']) ? $_COOKIE['email'] : '';
-$password = isset($_COOKIE['password']) ? $_COOKIE['password'] : '';
-  $errors = [];
-  if ($_SERVER["REQUEST_METHOD"] == 'POST'){
-    if (empty(htmlspecialchars($_POST['email']))== $email) {
-      $errors['email'] = 'Email không hợp lệ.';
-    } elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-      $errors['email'] = 'Email không hợp lệ.';
-    }elseif (empty(htmlspecialchars($_POST['password']))) {
-      $errors['password'] = 'Vui lòng nhập mật khẩu.';
-    } elseif (strlen($_POST['password']) == $password) {
-      $errors['password'] = 'Sai mật khẩu';
-    }if(count($errors)<1){
-    $_POST['email'] = $_POST['password'] = '';
-    header('location:./dashboard.php');
-  }
-  } 
+    if (session_status() == PHP_SESSION_NONE) {
+    session_start();}
+    $servername = "localhost";
+    $username = "banhang";
+    $password = "12345";
+    $dbname = "thuong_mai_dien_tu";
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("Kết nối thất bại: " . $conn->connect_error);
+    }
+    $error = "";
+    $email = "";
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $email = trim($_POST["email"]);
+        $password = trim($_POST["password"]);
+        if (!empty($email) && !empty($password)) {
+            $stmt = $conn->prepare("SELECT * FROM user WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows === 1) {
+                $user = $result->fetch_assoc();
+                if (password_verify($password, $user["password"])) {
+                    $_SESSION["username"] = $user["username"];
+                    header("Location: dashboard.php");
+                    exit;
+                } else {
+                    $error = "Sai mật khẩu!";
+                }
+            } else {
+                $error = "Sai email";
+            }
+    
+            $stmt->close();
+        } else {
+            $error = "Vui lòng nhập đầy đủ thông tin.";
+        }
+    }
 ?>
 <body>
-  <?php require('./include/header.php')?>
-    <main>
-        <div class="container">
+    <?php require('./include/header.php'); ?>
+<main>
+    <div class="container">
         <div class="left">
             <h1>RƯỢU NGON THÀNH TỊNH</h1>
-            <p>Nơi thỏa sức đam mê với các loại rượu</p>
         </div>
         <div class="right">
-            <form class="login-box" method="POST">
-            <input type="email" name="email" placeholder="Email" value="<?php echo isset($_POST['email'])? $_POST['email'] : ''?>">
-            <span class="error"><?php echo $errors['email']?? ''; ?></span>
-            <input type="password" name="password" placeholder="Mật khẩu" value="<?php echo isset($_POST['password'])? $_POST['password'] : ''?>">
-            <span class="error"><?php echo $errors['password'] ?? ''; ?></span>
-            <input type="submit" value="Đăng nhập">
-            <a href="./reset-password.php">Quên mật khẩu?</a>
-            <button class="create-account"><a href="register.php">Tạo tài khoản mới</a></button>
+            <form class="login-box" method="POST" action="">
+                <?php if (!empty($error)): ?>
+                    <div class="error"><?php echo htmlspecialchars($error); ?></div>
+                <?php endif; ?>
+
+                <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($email); ?>" required>
+
+                <input type="password" name="password" placeholder="Mật khẩu" required>
+
+                <input type="submit" value="Đăng nhập">
+
+                <a href="./reset-password.php">Quên mật khẩu?</a>
+
+                <button class="create-account">
+                    <a href="register.php">Tạo tài khoản mới</a>
+                </button>
             </form>
         </div>
-        </div>
-    </main>
-    <?php require('./include/footer.php')?>
+    </div>
+</main>
+    <?php require('./include/footer.php'); ?>
 </body>
 </html>
