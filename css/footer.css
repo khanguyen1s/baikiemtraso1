@@ -1,0 +1,21 @@
+:root{
+    --red-color:#830004ea;
+    --white-color: #ffffff;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+footer {
+    background: var(--red-color);
+    text-align: center;
+    padding: 15px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+p{
+    color: var(--white-color);
+}

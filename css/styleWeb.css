@@ -1,0 +1,481 @@
+:root{
+    --first-color:#7B002C;
+    --seconrd-color:#5E3C2B;
+    --white-color: #ffffff;
+    --button-background:#C9A227;
+    --button-hover: #9b7d1d;
+    --black-color:black;
+}
+main {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url(../img/background-login.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 104vh;
+    backdrop-filter: blur(5px);
+}
+
+main::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    z-index: -1;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px;  
+}
+.left {
+    flex: 1;
+    padding: 20px;
+}
+.left h1 {
+    color: rgb(255, 0, 0);
+    font-size: 48px;
+    margin: 0;
+}
+.left p {
+    font-size: 24px;
+    color: var(--white-color);
+    text-shadow: #000;
+}
+.right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+.login-box {
+    background-color: var(--white-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--black-color);
+    width: 100%;
+    max-width: 400px;
+}
+.login-box input[type="name"],
+.login-box input[type="email"],
+.login-box input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    font-size: 16px;
+}
+.login-box input[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--button-background);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.login-box input[type="submit"]:hover {
+    background-color: var(--button-hover);
+}
+.login-box button {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--button-background);
+    color: var(--white-color);
+    border: none;
+    border-radius: 6px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.login-box a {
+    display: block;
+    text-align: center;
+    margin: 10px 0;
+    color: #1877f2;
+    text-decoration: none;
+    font-size: 14px;
+}
+.login-box .create-account {
+    background-color: #42b72a;
+    margin-top: 10px;
+}
+.login-box button:hover {
+    background-color: #2d7e1d;
+}
+.create-account a {
+    display: block;
+    text-align: center;
+    margin: 10px 0;
+    color: var(--white-color);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+
+
+.form-container {
+    background-color: var(--white-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px var(--black-color);
+    width: 360px;
+}
+
+.form-container h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.form-container p {
+    font-size: 14px;
+    color: #606770;
+    margin-bottom: 20px;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccd0d5;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-container .btn {
+    background-color: var(--button-background);
+    color: #fff;
+    padding: 10px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+}  
+.btn:hover{
+    background-color: var(--button-hover);
+}
+
+.form-container .login-link {
+    font-size: 14px;
+    color: #1877f2;
+    text-decoration: none;
+}
+
+
+.container .index-container {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    color: #000;
+}
+
+.small-text, h1, .description, .buttons {
+    position: relative;
+    z-index: 1;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: var(--first-color);
+}
+
+
+.btn {
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: 0.3s;
+    display: inline-block;
+}
+ 
+.primary {
+    background-color: var(--button-background);
+    color: var(--white-color);
+}
+
+.primary:hover {
+    background-color: var(--button-hover);
+}
+
+.secondary {
+    color: var(--white-color);
+}
+
+.secondary:hover {
+    text-decoration: underline;
+}
+.contact-container {
+    width: 50%;
+    margin: 10px auto;
+    padding: 3%;
+    background: var(--white-color);
+    border-radius: 8px;
+    box-shadow: 0 0 10px var(--black-color);
+    text-align: center;
+}
+
+.contact-container h2 {
+    margin-bottom: 20px;
+}
+
+.contact-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-container label {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.contact-container input,
+.contact-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.contact-container button {
+    margin-top: 20px;
+    padding: 10px;
+    background: var(--button-background);
+    color: var(--white-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.contact-container button:hover {
+    background: var(--button-background);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.dashboard {
+    width: 600px;
+    height: 400px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+}
+
+.gauges {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.gauge-container {
+    text-align: center;
+    width: 30%;
+}
+
+.gauge {
+    width: 100px;
+    height: 50px;
+}
+
+.bottom-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.left-section, .right-section {
+    width: 48%;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.reset-container {
+    width: 400px;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: var(--button-background);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--button-hover);
+}
+
+.containert {
+    width: 80%;             
+    margin: 40px auto;       
+    padding: 20px;          
+    background-color: var(--white-color);
+    border-radius: 10px;     
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.containert .h2 {
+    margin-bottom: 20px;
+}
+
+.containert .table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.containert .th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.containert .th {
+    background-color: #f1f1f1;
+}
+
+.containert .button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.containert .add-product {
+    margin-top: 10px;
+    background-color: var(--button-hover);
+    color: white;
+
+}
+
+@media (max-width: 768px) {
+    .reset-container {
+        width: 90%;
+    }
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .left, .right {
+        flex: none;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+    .left h1 {
+        font-size: 36px;
+    }
+    .left p {
+        font-size: 18px;
+    }
+    }@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .left, .right {
+        flex: none;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+    .left h1 {
+        font-size: 36px;
+    }
+    .left p {
+        font-size: 18px;
+    }
+}
+ 

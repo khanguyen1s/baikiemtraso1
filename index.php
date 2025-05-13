@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="cssweb/styleWeb.css">
-    <title>Document</title>
+    <title>index</title>
+    <link rel="stylesheet" href="./css/styleWeb.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/footer.css">
 </head>
+    <?php
+    $servername = "localhost";
+    $username = "banhang";
+    $password = "12345";
+    $dbname = "thuong_mai_dien_tu";
+    
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    
+    if ($conn->connect_error) {
+        die("Kết nối thất bại: " . $conn->connect_error);
+    }
+    ?>
 <body>
     <?php require('./include/header.php')?>
 <main>
