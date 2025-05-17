@@ -20,6 +20,15 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Kết nối thất bại: " . $conn->connect_error);
 }
+
+$categoryResult = $conn->query("SELECT id, danh_muc FROM category");
+$categories = [];
+if ($categoryResult && $categoryResult->num_rows > 0) {
+    while ($row = $categoryResult->fetch_assoc()) {
+        $categories[] = $row;
+    }
+}
+
 if (!isset($_GET['id'])) {
     header("Location: list_products.php");
     exit();
@@ -37,13 +46,16 @@ if ($result->num_rows == 0) {
 }
 $productToUpdate = $result->fetch_assoc();
 $stmt->close();
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $categoryId = (int)$_POST['category_id'];
     $productName = $conn->real_escape_string($_POST['product_name']);
     $productPrice = (int)$_POST['product_price'];
     $productDescription = $conn->real_escape_string($_POST['product_description']);
     $productTotal = (int)$_POST['total'];
     $productStatus = isset($_POST['status']) ? 1 : 0;
     $imagePath = $productToUpdate['image'];
+
     if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] == 0) {
         $targetDir = "../uploads/";
         if (!is_dir($targetDir)) {
@@ -58,7 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $imagePath = $imageName;
         }
     }
+
     $updateSql = "UPDATE products SET 
+                 category_id = ?, 
                  product_name = ?, 
                  price = ?, 
                  description = ?, 
@@ -68,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                  WHERE id = ?";
     
     $stmt = $conn->prepare($updateSql);
-    $stmt->bind_param("sisisii", $productName, $productPrice, $productDescription, $productTotal, $imagePath, $productStatus, $id);
+    $stmt->bind_param("isisssii", $categoryId, $productName, $productPrice, $productDescription, $productTotal, $imagePath, $productStatus, $id);
     
     if ($stmt->execute()) {
         header("Location: index.php?update=success");
@@ -85,6 +99,16 @@ $conn->close();
     <div class="contact-container">
         <h2>Cập nhật sản phẩm</h2>
         <form action="" method="POST" enctype="multipart/form-data">
+            <label for="category_id">Danh mục:</label>
+            <select name="category_id" id="category_id" required>
+                <option value="">-- Chọn danh mục --</option>
+                <?php foreach ($categories as $cat): ?>
+                    <option value="<?= $cat['id'] ?>" <?= $cat['id'] == $productToUpdate['category_id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($cat['danh_muc']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select><br><br>
+
             <label for="product_name">Tên sản phẩm:</label>
             <input type="text" name="product_name" id="product_name" 
                    value="<?= htmlspecialchars($productToUpdate['product_name']) ?>" required><br><br>

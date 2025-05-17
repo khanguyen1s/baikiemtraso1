@@ -22,6 +22,18 @@ if ($conn->connect_error) {
 }
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
     $id = $conn->real_escape_string($_GET['id']);
+    $query = "SELECT image FROM products WHERE id = '$id'";
+    $result = $conn->query($query);
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $image = $row['image'];
+        if (!empty($image)) {
+            $image_path = "../uploads/" . $image;
+            if (file_exists($image_path)) {
+                unlink($image_path);
+            }
+        }
+    }
     $sql = "DELETE FROM products WHERE id = '$id'";
     if ($conn->query($sql)) {
         header("Location: index.php?deleted=true");
@@ -41,16 +53,13 @@ $conn->close();
 ?>
 <body>
   <?php include '../include/header.php'; ?>
-  
   <main>
     <div class="containert">
       <h1>Danh sách sản phẩm</h1>
       <div class="product-count">Tổng số sản phẩm: <?php echo $total_products; ?></div>
-      
       <?php if (isset($_GET['deleted'])): ?>
         <div class="alert alert-success">Đã xóa sản phẩm thành công!</div>
       <?php endif; ?>
-      
       <table cellpadding="10">
         <thead>
           <tr>
@@ -90,11 +99,9 @@ $conn->close();
           <?php endif; ?>
         </tbody>
       </table>
-      
       <a href="create.php"><button class="add-product">Thêm Sản Phẩm</button></a>
     </div>
   </main>
-  
   <?php include '../include/footer.php'; ?>
 </body>
 </html>

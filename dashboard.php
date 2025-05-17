@@ -36,11 +36,15 @@
                 <div class="left-section">
                     <h3>Đơn hàng</h3>
                     <button onclick="location.href='store.php'">Chuyển Trang</button>
+                    <h3>Quản lý đơn hàng</h3>
+                    <button onclick="location.href='manager-cart.php'">Chuyển Trang</button>
                 </div>
                 <div class="right-section">
                     <h3>Sản Phẩm</h3>
                     <h4>Có <?php echo $totalProducts; ?> sản phẩm</h4>
                     <button onclick="location.href='products/index.php'">Chuyển Trang</button>
+                    <h3>Danh mục</h3>
+                    <button onclick="location.href='category.php'">Chuyển Trang</button>    
                 </div>
             </div>
     </section>

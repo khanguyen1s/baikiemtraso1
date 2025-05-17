@@ -20,52 +20,66 @@
     }
 </style>
 <?php
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
-    $servername = "localhost";
-    $username = "banhang";
-    $password = "12345";
-    $dbname = "thuong_mai_dien_tu";
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Kết nối thất bại: " . $conn->connect_error);
-    }
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: login.php");
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$servername = "localhost";
+$username = "banhang";
+$password = "12345";
+$dbname = "thuong_mai_dien_tu";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die("Kết nối thất bại: " . $conn->connect_error);
+}
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+$success_msg = "";
+$error_msg = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete'])) {
+    $sql_delete_guest = "DELETE FROM guest WHERE user_id = ?";
+    $stmt_delete_guest = $conn->prepare($sql_delete_guest);
+    $stmt_delete_guest->bind_param("i", $user_id);
+    $stmt_delete_guest->execute();
+    $stmt_delete_guest->close();
+
+    $sql_delete_user = "DELETE FROM user WHERE id = ?";
+    $stmt_delete_user = $conn->prepare($sql_delete_user);
+    $stmt_delete_user->bind_param("i", $user_id);
+    if ($stmt_delete_user->execute()) {
+        session_destroy();
+        header("Location: login.php?msg=deleted");
         exit();
+    } else {
+        $error_msg = "Lỗi khi xóa tài khoản: " . $conn->error;
     }
-    $user_id = $_SESSION['user_id'];
-    $success_msg = "";
-    $error_msg = "";
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete'])) {
-        $sql_delete = "DELETE FROM user WHERE id = ?";
-        $stmt_delete = $conn->prepare($sql_delete);
-        $stmt_delete->bind_param("i", $user_id);
-        if ($stmt_delete->execute()) {
-            session_destroy();
-            header("Location: login.php?msg=deleted");
-            exit();
-        } else {
-            $error_msg = "Lỗi khi xóa tài khoản: " . $conn->error;
-        }
-        $stmt_delete->close();
-    }
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
-        $new_name = trim($_POST['name']);
-        $fullname = trim($_POST['fullname']);
-        $address = trim($_POST['address']);
-        $number_phone = trim($_POST['number_phone']);
+    $stmt_delete_user->close();
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
+    $new_name = trim($_POST['name']);
+    $fullname = trim($_POST['fullname']);
+    $address = trim($_POST['address']);
+    $number_phone = trim($_POST['number_phone']);
+
     if (!empty($new_name)) {
         $sql_update = "UPDATE user SET username = ? WHERE id = ?";
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("si", $new_name, $user_id);
         $stmt_update->execute();
         $stmt_update->close();
+
         $check_guest = $conn->prepare("SELECT id FROM guest WHERE user_id = ?");
         $check_guest->bind_param("i", $user_id);
         $check_guest->execute();
         $result_check = $check_guest->get_result();
+
         if ($result_check->num_rows > 0) {
             $sql_guest_update = "UPDATE guest SET full_name = ?, address = ?, number_phone = ? WHERE user_id = ?";
             $stmt_guest = $conn->prepare($sql_guest_update);
@@ -75,18 +89,21 @@
             $stmt_guest = $conn->prepare($sql_guest_insert);
             $stmt_guest->bind_param("isss", $user_id, $fullname, $address, $number_phone);
         }
+
         if ($stmt_guest->execute()) {
             $_SESSION['username'] = $new_name;
             $success_msg = "Cập nhật thông tin thành công!";
         } else {
             $error_msg = "Lỗi khi cập nhật thông tin khách: " . $conn->error;
         }
+
         $stmt_guest->close();
         $check_guest->close();
     } else {
         $error_msg = "Vui lòng điền tên.";
     }
 }
+
 $sql = "SELECT username, email FROM user WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -101,6 +118,7 @@ if ($result->num_rows > 0) {
     exit();
 }
 $stmt->close();
+
 $sql_guest = "SELECT full_name, address, number_phone FROM guest WHERE user_id = ?";
 $stmt_guest = $conn->prepare($sql_guest);
 $stmt_guest->bind_param("i", $user_id);
