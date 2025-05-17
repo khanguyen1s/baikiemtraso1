@@ -1,18 +1,5 @@
-<?php
-    $servername = "localhost";
-    $username = "banhang";
-    $password = "12345";
-    $dbname = "thuong_mai_dien_tu";
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Kết nối thất bại: " . $conn->connect_error);
-    }
-    $sql = "SELECT category_id, product_name, description, price, image FROM products";
-    $result = $conn->query($sql);
-?>
-
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Danh sách sản phẩm</title>
@@ -70,33 +57,44 @@
             margin-bottom: 8px;
         }
     </style>
+<?php
+    $servername = "localhost";
+    $username = "banhang";
+    $password = "12345";
+    $dbname = "thuong_mai_dien_tu";
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("Kết nối thất bại: " . $conn->connect_error);
+    }
+    $sql = "SELECT id, product_name, description, price, image FROM products";
+    $result = $conn->query($sql);
+?>
 </head>
 <body>
-    <?php include './include/header.php';?>
+    <?php include './include/header.php'; ?>
 <main>
-  <div class="containert">
-    <h2 class="h2">Danh sách sản phẩm</h2>
-    <div class="product-wrapper">
-      <?php
-      if ($result->num_rows > 0) {
-          while($row = $result->fetch_assoc()) {
-              $category_id = $row['category_id'];
-              echo '<a href="product_detail.php?id=' . $category_id . '" class="product-card">';
-                  if (!empty($row['image'])):
-                    echo '<img src="./uploads/' . htmlspecialchars($row['image']) . '" alt="' . htmlspecialchars($row['product_name']) . '" class="product-image">';
-                  endif;
-              echo '<div class="product-name">' . htmlspecialchars($row['product_name']) . '</div>';
-              echo '<div class="description">' . htmlspecialchars($row['description']) . '</div>';
-              echo '<div class="product-price">₫' . number_format($row['price'], 0, ',', '.') . '</div>';
-              echo '</a>';
-          }
-      } else {
-          echo "<p>Không có sản phẩm nào.</p>";
-      }
-      $conn->close();
-      ?>
+    <div class="containert">
+        <h2 class="h2">Danh sách sản phẩm</h2>
+        <div class="product-wrapper">
+            <?php if ($result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <a href="product.php?id=<?= $row['id'] ?>" class="product-card">
+                        <?php if (!empty($row['image'])): ?>
+                            <img src="./uploads/<?= htmlspecialchars($row['image']) ?>" 
+                                 alt="<?= htmlspecialchars($row['product_name']) ?>" 
+                                 class="product-image">
+                        <?php endif; ?>
+                        <div class="product-name"><?= htmlspecialchars($row['product_name']) ?></div>
+                        <div class="description"><?= htmlspecialchars($row['description']) ?></div>
+                        <div class="product-price">₫<?= number_format($row['price'], 0, ',', '.') ?></div>
+                    </a>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>Không có sản phẩm nào.</p>
+            <?php endif; ?>
+            <?php $conn->close(); ?>
+        </div>
     </div>
-  </div>
 </main>
     <?php include('./include/footer.php'); ?>
 </body>

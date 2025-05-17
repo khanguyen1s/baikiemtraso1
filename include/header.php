@@ -46,6 +46,7 @@ if ($conn->connect_error) {
         <nav>
             <ul>
                 <?php if ($user): ?>
+                    <li><a href="<?= $baseUrl ?>cart.php">🛒</a></li>
                     <li><a href="<?= $baseUrl ?>profile.php"><?= htmlspecialchars($user) ?></a></li>
                     <li><a href="?logout=true">Đăng xuất</a></li>
                 <?php else: ?>

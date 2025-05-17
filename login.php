@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,25 +10,24 @@
 </head>
 <?php
     if (session_status() == PHP_SESSION_NONE) {
-    session_start();}
-    $servername = "localhost";
-    $username = "banhang";
-    $password = "12345";
-    $dbname = "thuong_mai_dien_tu";
-    $conn = new mysqli($servername, $username, $password, $dbname);
+        session_start();
+    }
+    $conn = new mysqli("localhost", "banhang", "12345", "thuong_mai_dien_tu");
     if ($conn->connect_error) {
         die("Kết nối thất bại: " . $conn->connect_error);
     }
     $error = "";
     $email = "";
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {//thay cookie dung ss
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = trim($_POST["email"]);
         $password = trim($_POST["password"]);
+
         if (!empty($email) && !empty($password)) {
             $stmt = $conn->prepare("SELECT * FROM user WHERE email = ?");
             $stmt->bind_param("s", $email);
             $stmt->execute();
             $result = $stmt->get_result();
+
             if ($result->num_rows === 1) {
                 $user = $result->fetch_assoc();
                 if (password_verify($password, $user["password"])) {
@@ -40,9 +39,9 @@
                     $error = "Sai mật khẩu!";
                 }
             } else {
-                $error = "Sai email";
+                $error = "Sai email!";
             }
-    
+
             $stmt->close();
         } else {
             $error = "Vui lòng nhập đầy đủ thông tin.";
@@ -63,13 +62,9 @@
                 <?php endif; ?>
 
                 <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($email); ?>" required>
-
                 <input type="password" name="password" placeholder="Mật khẩu" required>
-
                 <input type="submit" value="Đăng nhập">
-
                 <a href="./reset-password.php">Quên mật khẩu?</a>
-
                 <button class="create-account">
                     <a href="register.php">Tạo tài khoản mới</a>
                 </button>
@@ -77,6 +72,6 @@
         </div>
     </div>
 </main>
-    <?php require('./include/footer.php'); ?>
+<?php require('./include/footer.php'); ?>
 </body>
 </html>
